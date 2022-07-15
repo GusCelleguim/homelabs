@@ -1,0 +1,95 @@
+---
+#
+# Tasks and roles for all hosts
+#
+- hosts: grandmamaster
+  gather_facts: no
+
+  pre_tasks:
+      - import_tasks: tasks/ssh_juggle_port.yml
+        tags:
+            - port
+
+- hosts: grandmamaster
+  become: yes
+
+  roles:
+      #
+      # Basics
+      #
+      - role: system
+        tags:
+            - system
+    
+      - role: gantsign.oh-my-zsh
+        users: 
+          - username: "{{ username }}"
+        tags:
+            - shell
+
+      - role: geerlingguy.security
+        tags: 
+            - security
+
+      - role: docker
+        tags:
+            - docker
+
+      - role: geerlingguy.ntp
+        tags:
+            - ntp
+
+            
+      - role: oefenweb.dns
+        tags:
+            - dns
+
+
+ # nas stuff
+      - role: filesystems/mergerfs
+        become: yes
+        tags:
+            - fs
+            - mergerfs
+        when: enalbe_storage_stuff | default(False)
+
+
+      - role: filesystems/mounts
+        become: yes
+        tags:
+            - fs
+            - mounts
+        when: enalbe_storage_stuff | default(False)
+
+
+
+ # container stuff
+
+
+
+      - role: containers/system/watchtower
+        become: false
+        tags:
+            - containers
+            - watchtower
+
+      - role: containers/network/traefik
+        become: false
+        tags:
+            - containers
+            - traefik
+
+      - role: containers/network/pihole
+        become: false
+        tags:
+            - containers
+            - pihole
+
+
+# virt stuff
+
+      - role: virt/libvirt
+        tags:
+         - virt
+         - libvirt
+        when: enable_virt_stuff | default(False) 

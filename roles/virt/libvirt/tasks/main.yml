@@ -1,0 +1,18 @@
+---
+
+
+- name: Install Virt Stuff
+  become: true
+  package:
+    name: "{{ virt_packages }}"
+    state: present
+    
+- name: Enable and start libvirt
+  become: true
+  service:
+    name: libvirtd
+    state: started
+    enabled: true
+
+
+

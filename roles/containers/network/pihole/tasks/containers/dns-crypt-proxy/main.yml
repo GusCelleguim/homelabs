@@ -1,0 +1,37 @@
+---
+
+
+
+- name: Copy config file
+  become: true
+  ansible.builtin.copy:
+    src: files/dnscrypt-proxy.toml
+    dest: "{{ pihole_root}}/etc-dnscrypt-proxy/"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: '0777'
+
+
+
+
+- name: Spawn DnsCrypt 
+  docker_container:
+    name: dns-crypt-proxy
+    image: klutchell/dnscrypt-proxy:latest
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ traefik_network_name }}"
+      - name: pihole_network
+        ipv4_address: "10.0.1.2"
+    ports:
+      - "5300/udp:5300/udp"
+      - "5300/tcp:5300/tcp"
+    volumes:
+      - "{{ pihole_root}}/etc-dnscrypt-proxy:/config"
+
+    dns_servers:
+      - "127.0.0.1"
+      - "1.1.1.1"
+
+
+    

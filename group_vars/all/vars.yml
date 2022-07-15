@@ -1,0 +1,87 @@
+
+ 
+# network stuff
+
+
+# lan_network: "192.168.100.0"
+
+
+
+username: "lin"
+
+arch: amd64
+email: lin@fnxln.com
+
+
+version: jammy
+
+shell: /bin/zsh
+apt_mirror: http://ubuntu.c3sl.ufpr.br/ubuntu/
+
+timezone: Brazil/East
+locale: pt_BR.UTF-8
+ntp_timezone: '{{ timezone }}'
+docker_dir: /opt/docker/data
+dns_nameservers: ['1.1.1.1', '1.0.0.1']
+
+
+extra_packages:
+  - zsh
+  - net-tools
+  - htop
+  - speedtest-cli
+  - git
+  - neofetch
+  - rsync
+  - lm-sensors
+  - iotop
+
+
+#
+# SSH (geerlingguy.security)
+#
+security_ssh_port: 2244
+
+security_sudoers_passwordless: ['{{ username }}']
+
+security_autoupdate_reboot: true
+
+security_autoupdate_mail_to: '{{ email }}'
+
+security_autoupdate_reboot_time: '23:00'
+
+security_autoupdate_mail_on_error: false
+
+#enables
+
+enalbe_storage_stuff: true
+
+
+# virt stuff
+enable_virt_stuff: true
+
+virt_packages:
+  - libvirt-daemon-system
+  - qemu-kvm
+  - ovmf
+
+  
+# nas stuff
+
+mergerfs_root: /mnt/storage
+disks:
+  - src: /dev/vdb1
+    path: /mnt/pool/disk1
+  - src: /dev/vdc1
+    path: /mnt/pool/disk2    
+
+# paths
+
+storage_root: /mnt/storage
+docker_root: "{{ storage_root }}/Docker"
+
+
+# container stuff
+
+traefik_network_name: traefik_default
+pihole_root: "{{ docker_root }}/PiHole"

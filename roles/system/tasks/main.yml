@@ -1,0 +1,8 @@
+---
+
+- include_tasks: user.yml
+- include_tasks: essentials.yml
+- include_tasks: snap_killer.yml
+- include_tasks: monitoring.yml
+
+# - include_tasks: 
