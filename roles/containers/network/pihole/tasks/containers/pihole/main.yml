@@ -28,3 +28,4 @@
       # traefik.udp.routers.pihole-dns.rule: HostSNI("*")
       # traefik.udp.routers.pihole-dns.entrypoints: dns
       # traefik.tcp.routers.pihole-dns.entrypoints: dns
+      traefik.docker.network: "{{ traefik_network_name }}"

@@ -86,6 +86,23 @@
             - pihole
 
 
+
+
+      - role: containers/automation/homeassitant
+        become: false
+        tags:
+            - containers
+            - automation
+            - hass
+        
+      - role: containers/automation/mqtt
+        become: false
+        tags:
+            - containers
+            - automation
+            - mqtt
+
+
 # virt stuff
 
       - role: virt/libvirt

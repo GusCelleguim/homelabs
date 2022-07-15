@@ -1,0 +1,20 @@
+---
+- include_tasks: install_configs.yml
+- name: Spawn Mosquitto
+  docker_container:
+    name: mqtt
+    image: eclipse-mosquitto
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ automation_root}}/mqtt:/mosquitto"
+      - "/etc/localtime:/etc/localtime:ro"
+      - "{{ automation_root}}/mqtt/config:/mosquitto/config"
+      - "{{ automation_root}}/mqtt/data:/mosquitto/data"
+      - "{{ automation_root}}/mqtt/log:/mosquitto/log"
+
+    networks:
+      - name: "hass_network"
+        ipv4_address: 10.0.2.3
+    ports:
+      - 1883:1883
+      - 9001:9001    

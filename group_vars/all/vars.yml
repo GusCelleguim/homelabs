@@ -3,9 +3,9 @@
 # network stuff
 
 
-# lan_network: "192.168.100.0"
+lan_network: "192.168.15.0"
 
-
+host_ip: "192.168.15.167"
 
 username: "lin"
 
@@ -35,6 +35,7 @@ extra_packages:
   - rsync
   - lm-sensors
   - iotop
+  - neovim
 
 
 #
@@ -64,6 +65,8 @@ virt_packages:
   - libvirt-daemon-system
   - qemu-kvm
   - ovmf
+  - python3-lxml
+  - python3-libvirt
 
   
 # nas stuff
@@ -77,7 +80,7 @@ disks:
 
 # paths
 
-storage_root: /mnt/storage
+storage_root: "{{ mergerfs_root }}"
 docker_root: "{{ storage_root }}/Docker"
 
 
@@ -85,3 +88,4 @@ docker_root: "{{ storage_root }}/Docker"
 
 traefik_network_name: traefik_default
 pihole_root: "{{ docker_root }}/PiHole"
+automation_root: "{{ docker_root }}/Automation"

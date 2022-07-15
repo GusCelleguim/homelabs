@@ -16,3 +16,8 @@
 
 
 
+- name: Disable network virsh
+  community.libvirt.virt_net:
+    command: destroy
+    name: default 
+    autostart: false

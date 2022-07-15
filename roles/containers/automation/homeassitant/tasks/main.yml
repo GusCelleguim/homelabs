@@ -1,0 +1,29 @@
+---
+- name: Create hass network 
+  docker_network: 
+    name: hass_network
+    driver: bridge
+    ipam_config:
+      - subnet: '10.0.2.0/24'
+
+- name: spawn Home Assitant
+  docker_container: 
+    name: homeassitant
+    image: "homeassistant/home-assistant"
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ automation_root }}/homeassitant/config:/config/"
+    ports:
+      - "8123:8123"
+    networks:
+      - name: "{{ traefik_network_name }}"
+      - name: "hass_network"
+        ipv4_address: 10.0.2.2
+    dns_servers: 
+      - "{{ host_ip }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.hass.rule: Host("hass.horse")
+      traefik.http.routers.hass.entrypoints: web
+      traefik.http.services.hass.loadbalancer.server.port: "8123"
+      traefik.docker.network: "{{ traefik_network_name }}"

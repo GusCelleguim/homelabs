@@ -1,0 +1,40 @@
+- name: Create the config folder
+  become: true
+  file:
+    path: "{{automation_root}}/mqtt/config"
+    state: directory
+    mode: 0755
+    owner: 1883
+    group: 1883
+
+- name: Copy mosquitto.conf 
+  become: true
+  copy:
+    src: files/mosquitto.conf
+    dest: "{{automation_root}}/mqtt/config/mosquitto.conf"
+    mode: 0644
+    owner: 1883
+    group: 1883
+
+- name: Create mosquitto.passwd 
+  become: true
+  file:
+    path: "{{automation_root}}/mqtt/config/mosquitto.passwd"
+    state: touch
+    access_time: preserve
+    modification_time: preserve
+    mode: 0644
+    owner: 1883
+    group: 1883
+
+- name: Check if mosquitto.passwd is populated
+  become: true
+  lineinfile:
+    path: "{{automation_root}}/mqtt/config/mosquitto.passwd"
+    regexp: "^mosquitto.*$"
+    state: absent
+  register: mosquitto_passwd_present
+  changed_when: not mosquitto_passwd_present.changed
+  check_mode: yes
+  notify:
+    - Generate the password

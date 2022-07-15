@@ -24,13 +24,13 @@
 #     name: "sambashare"
 #     state: present
  
-- name: Append the samba group
-  when: enable_samba | default(False) 
-  user:
-    name: "{{ username }}"
-    groups: 
-      - sambashare
-    append: true
+# - name: Append the samba group
+#   when: enable_samba | default(False) 
+#   user:
+#     name: "{{ username }}"
+#     groups: 
+#       - sambashare
+#     append: true
 
 - name: Chmod the user home directory
   file:

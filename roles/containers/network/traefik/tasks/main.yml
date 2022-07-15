@@ -2,6 +2,9 @@
 - name: Create a network
   docker_network:
     name: "{{ traefik_network_name }}"
+    driver: bridge
+    ipam_config:
+      - subnet: 172.18.0.0/24
 
 - name: Spawn traefik
   docker_container:
@@ -16,6 +19,7 @@
       # - "--entrypoints.dns.address=:53"
     networks:
       - name: "{{ traefik_network_name }}"
+        ipv4_address: "172.18.0.200"
     ports:
       - "80:80"
       - "8080:8080"
