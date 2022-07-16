@@ -66,42 +66,48 @@
  # container stuff
 
 
-
+# system crytical stuff
       - role: containers/system/watchtower
-        become: false
+        become: true
         tags:
             - containers
             - watchtower
 
       - role: containers/network/traefik
-        become: false
+        become: true
         tags:
             - containers
             - traefik
 
       - role: containers/network/pihole
-        become: false
+        become: true
         tags:
             - containers
             - pihole
 
-
+# home automation stuff
 
 
       - role: containers/automation/homeassitant
-        become: false
+        become: true
         tags:
             - containers
             - automation
             - hass
         
       - role: containers/automation/mqtt
-        become: false
+        become: true
         tags:
             - containers
             - automation
             - mqtt
 
+      - role: containers/automation/nodered
+        become: true
+        tags:
+            - containers
+            - automation
+            - nodered
 
 # virt stuff
 

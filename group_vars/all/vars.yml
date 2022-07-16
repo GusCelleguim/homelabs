@@ -1,11 +1,50 @@
 
- 
+#
 # network stuff
-
+#
 
 lan_network: "192.168.15.0"
 
 host_ip: "192.168.15.167"
+
+
+
+
+# - docker network
+
+
+# - traefik network stuff
+traefik_network_name: traefik_default
+
+traefik_subnet: "172.18.0.0/24"
+
+traefik_controller_ipv4: "172.18.0.200"
+
+# - pihole network stuff
+pihole_network_name: pihole_network
+
+pihole_subnet: '10.0.1.0/24'
+
+pihole_container_ipv4: 10.0.1.3
+
+dnscrypt_container_ipv4: 10.0.1.2
+
+# - home assitant network stuff
+
+hass_network_name: hass_network
+
+hass_subnet: '10.0.2.0/24'
+
+hass_container_ipv4: 10.0.2.2
+
+hass_mqtt_container_ipv4: 10.0.2.3
+
+
+hass_nodered_container_ipv4: 10.0.2.4
+#
+# main variables
+#
+
 
 username: "lin"
 
@@ -86,6 +125,8 @@ docker_root: "{{ storage_root }}/Docker"
 
 # container stuff
 
-traefik_network_name: traefik_default
+
+enable_homeautomation: true
+
 pihole_root: "{{ docker_root }}/PiHole"
 automation_root: "{{ docker_root }}/Automation"

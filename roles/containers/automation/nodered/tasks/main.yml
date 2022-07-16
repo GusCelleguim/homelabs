@@ -1,0 +1,32 @@
+- name: Chmod the data directory
+  file:
+    path: "{{ automation_root }}/{{ container_name }}"
+    state: directory
+    mode: 0777
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    recurse: yes
+
+
+
+- name: spawn NodeRED
+  docker_container: 
+    name: "{{container_name}}"
+    image: "nodered/node-red:latest"
+    restart_policy: unless-stopped
+    volumes:
+      - "{{ automation_root }}/{{ container_name }}/data:/data"
+    ports:
+      - "1880:1880"
+    networks:
+      - name: "{{ traefik_network_name }}"
+      - name: "{{ hass_network_name }}"
+        ipv4_address: "{{ hass_nodered_container_ipv4 }}"
+    dns_servers: 
+      - 1.1.1.1
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.nodered.rule: Host("node.horse")
+      traefik.http.routers.nodered.entrypoints: web
+      traefik.http.services.nodered.loadbalancer.server.port: "1880"
+      traefik.docker.network: "{{ traefik_network_name }}"

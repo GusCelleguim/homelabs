@@ -1,10 +1,10 @@
 ---
 - name: Create hass network 
   docker_network: 
-    name: hass_network
+    name: "{{ hass_network_name }}"
     driver: bridge
     ipam_config:
-      - subnet: '10.0.2.0/24'
+      - subnet: "{{ hass_subnet }}"
 
 - name: spawn Home Assitant
   docker_container: 
@@ -17,10 +17,10 @@
       - "8123:8123"
     networks:
       - name: "{{ traefik_network_name }}"
-      - name: "hass_network"
-        ipv4_address: 10.0.2.2
+      - name: "{{ hass_network_name }}"
+        ipv4_address: "{{ hass_container_ipv4 }}"
     dns_servers: 
-      - "{{ host_ip }}"
+      - 1.1.1.1
     labels:
       traefik.enable: "true"
       traefik.http.routers.hass.rule: Host("hass.horse")

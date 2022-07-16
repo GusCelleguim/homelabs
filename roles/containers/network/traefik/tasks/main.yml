@@ -4,7 +4,7 @@
     name: "{{ traefik_network_name }}"
     driver: bridge
     ipam_config:
-      - subnet: 172.18.0.0/24
+      - subnet: "{{ traefik_subnet }}"
 
 - name: Spawn traefik
   docker_container:
@@ -16,13 +16,16 @@
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--entrypoints.web.address=:80"
+      # - "--entrypoints.web.redirect.scheme=https"
+      - "--entrypoints.websecure.address=:443"
       # - "--entrypoints.dns.address=:53"
     networks:
       - name: "{{ traefik_network_name }}"
-        ipv4_address: "172.18.0.200"
+        ipv4_address: "{{ traefik_controller_ipv4 }}"
     ports:
       - "80:80"
       - "8080:8080"
+      - "443:443"
       # - "53:53"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"

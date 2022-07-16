@@ -54,8 +54,6 @@
     user: "{{ username }}"
     state: present
     key: "{{ ssh_public_key }}"
-  notify:
-    - remove default user
 
 - name: Set the default shell
   user: 

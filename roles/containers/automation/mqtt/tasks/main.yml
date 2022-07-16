@@ -13,8 +13,8 @@
       - "{{ automation_root}}/mqtt/log:/mosquitto/log"
 
     networks:
-      - name: "hass_network"
-        ipv4_address: 10.0.2.3
+      - name: "{{ hass_network_name }}"
+        ipv4_address: "{{ hass_mqtt_container_ipv4 }}"
     ports:
       - 1883:1883
-      - 9001:9001    
+      - 9001:9001

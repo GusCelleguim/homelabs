@@ -1,10 +1,10 @@
 ---
 - name: create pihole network
   docker_network:
-    name: pihole_network
+    name: "{{ pihole_network_name }}"
     driver: bridge
     ipam_config:
-      - subnet: '10.0.1.0/24'
+      - subnet: "{{ pihole_subnet }}"
 
 - include_tasks: containers/dns-crypt-proxy/main.yml
 - include_tasks: containers/pihole/main.yml
