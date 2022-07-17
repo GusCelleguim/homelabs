@@ -1,0 +1,16 @@
+---
+- name: Postgres for hass
+  docker_container:
+    name: postgres_hass
+    image: postgres:alpine
+    restart_policy: unless-stopped
+    networks:
+      - name: "{{ hass_network_name }}"
+        ipv4_address: "{{ hass_db_container_ipv4 }}"
+    env:
+      POSTGRES_DB: homeassistant
+      POSTGRES_USER: "{{ hass_db_user }}"
+      POSTGRES_PASSWORD: "{{ hass_db_pass }}"
+    volumes:
+      - "{{ automation_root }}/hass_db:/var/lib/postgresql/data:rw"
+    privileged: true

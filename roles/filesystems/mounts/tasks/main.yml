@@ -14,7 +14,7 @@
   mount:
     name: "{{ mergerfs_root }}"
     src: /mnt/pool/disk*
-    opts: direct_io,defaults,allow_other,moveonenospc=1,minfreespace=22G,fsname=mergerfs_slow,uid=1000,gid=1000
+    opts: defaults,allow_other,moveonenospc=1,minfreespace=22G,fsname=mergerfs_slow
     fstype: fuse.mergerfs
     state: mounted
   when: disks[0] is defined

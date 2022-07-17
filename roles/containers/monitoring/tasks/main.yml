@@ -1,0 +1,12 @@
+---
+- name: Create monitoring network
+  docker_network: 
+    name: "{{ monitoring_network_name }}"
+    driver: bridge
+    ipam_config:
+      - subnet: "{{ monitoring_subnet }}"
+
+
+- include_tasks: loki.yml
+- include_tasks: grafana.yml
+- include_tasks: prometheus-container.yml

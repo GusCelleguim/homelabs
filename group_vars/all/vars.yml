@@ -3,12 +3,12 @@
 # network stuff
 #
 
-lan_network: "192.168.15.0"
+lan_network: "192.168.2.0"
 
-host_ip: "192.168.15.167"
+host_ip: "192.168.2.200"
 
 
-
+router_ip: "192.168.2.1" 
 
 # - docker network
 
@@ -19,6 +19,17 @@ traefik_network_name: traefik_default
 traefik_subnet: "172.18.0.0/24"
 
 traefik_controller_ipv4: "172.18.0.200"
+# - monitoring netwrok stuff
+
+monitoring_network_name: monitoring_newtwork
+
+monitoring_subnet: '10.0.5.0/24'
+
+monitoring_grafana_container_ipv4: 10.0.5.2
+
+monitoring_loki_container_ipv4: 10.0.5.3
+
+monitoring_prometheus_container_ipv4: 10.0.5.4
 
 # - pihole network stuff
 pihole_network_name: pihole_network
@@ -39,8 +50,10 @@ hass_container_ipv4: 10.0.2.2
 
 hass_mqtt_container_ipv4: 10.0.2.3
 
+hass_db_container_ipv4: 10.0.2.5
 
 hass_nodered_container_ipv4: 10.0.2.4
+
 #
 # main variables
 #
@@ -112,10 +125,12 @@ virt_packages:
 
 mergerfs_root: /mnt/storage
 disks:
-  - src: /dev/vdb1
+  - src: /dev/disk/by-id/ata-ST3000NM0053_Z1Y0Z694-part1
     path: /mnt/pool/disk1
-  - src: /dev/vdc1
+  - src: /dev/disk/by-id/ata-ST500LM021-1KJ152_W62HZTQK-part1
     path: /mnt/pool/disk2    
+  - src: /dev/disk/by-id/ata-ST500LM012_HN-M500MBB_S2ZAJ5DF231523-part1
+    path: /mnt/pool/disk3
 
 # paths
 
@@ -128,5 +143,7 @@ docker_root: "{{ storage_root }}/Docker"
 
 enable_homeautomation: true
 
+enable_monitoring: true
+monitoring_root: "{{ docker_root }}/Monitoring"
 pihole_root: "{{ docker_root }}/PiHole"
 automation_root: "{{ docker_root }}/Automation"

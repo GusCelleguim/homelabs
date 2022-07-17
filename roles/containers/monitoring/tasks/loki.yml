@@ -1,0 +1,23 @@
+- name: Copy loki-config.yml
+  become: true
+  copy:
+    src: files/loki-config.yml
+    dest: "{{ monitoring_root }}/loki/"
+    mode: 0777
+- name: Spawn Loki container
+  docker_container:
+    name: "{{ loki_container_name }}"
+    image: "grafana/loki:latest"
+    volumes:
+      - "{{ monitoring_root }}/loki:/etc/loki"
+    ports:
+      - "3100:3100"
+    restart_policy: unless-stopped
+    command: 
+      - "-config.file=/etc/loki/loki-config.yml"
+
+    networks:
+      - name: "{{ traefik_network_name }}"
+      - name: "{{ monitoring_network_name }}"
+        ipv4_address: "{{ monitoring_loki_container_ipv4 }}"
+    

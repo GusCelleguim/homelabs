@@ -1,0 +1,7 @@
+---
+
+grafana_container_name: "grafana"
+
+loki_container_name: "loki"
+
+prometheus_container_name: "prometheus"

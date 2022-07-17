@@ -5,5 +5,6 @@ roles:
  - name: geerlingguy.node_exporter
  - name: gantsign.oh-my-zsh
  - name: oefenweb.dns
+ - name: cloudalchemy.node_exporter
 collections:
   - community.libvirt

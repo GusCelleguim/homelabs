@@ -2,7 +2,7 @@
 #
 # Tasks and roles for all hosts
 #
-- hosts: grandmamaster
+- hosts: all
   gather_facts: no
 
   pre_tasks:
@@ -10,7 +10,7 @@
         tags:
             - port
 
-- hosts: grandmamaster
+- hosts: all
   become: yes
 
   roles:
@@ -84,6 +84,18 @@
         tags:
             - containers
             - pihole
+# monitoring stuff
+
+      - role: cloudalchemy.node_exporter
+        become: true
+        tags:
+            - monitoring
+
+      - role: containers/monitoring
+        become: true
+        tags:
+            - containers
+            - monitoring
 
 # home automation stuff
 

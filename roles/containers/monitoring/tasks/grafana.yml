@@ -1,0 +1,28 @@
+- name: change grafana directory permissions
+  become: true
+  file:
+    path: "{{ monitoring_root }}/grafana/"
+    state: directory
+    mode: 0777
+    recurse: true
+
+- name: Spawn Grafana container
+  docker_container:
+    name: "{{ grafana_container_name }}"
+    image: "grafana/grafana:latest"
+    volumes:
+      - "{{ monitoring_root }}/grafana:/var/lib/grafana"
+    ports:
+      - "3000:3000"
+    restart_policy: unless-stopped
+
+    networks:
+      - name: "{{ traefik_network_name }}"
+      - name: "{{ monitoring_network_name }}"
+        ipv4_address: "{{ monitoring_grafana_container_ipv4 }}"
+    labels: 
+      traefik.enable: "true"
+      traefik.http.routers.grafana.rule: Host("grafana.horse")
+      traefik.http.routers.grafana.entrypoints: web
+      traefik.http.services.grafana.loadbalancer.server.port: "3000"
+      traefik.docker.network: "{{ traefik_network_name }}"

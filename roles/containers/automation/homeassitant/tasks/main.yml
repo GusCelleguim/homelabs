@@ -6,6 +6,8 @@
     ipam_config:
       - subnet: "{{ hass_subnet }}"
 
+- include_tasks: db.yml
+
 - name: spawn Home Assitant
   docker_container: 
     name: homeassitant
@@ -21,6 +23,7 @@
         ipv4_address: "{{ hass_container_ipv4 }}"
     dns_servers: 
       - 1.1.1.1
+    privileged: true        
     labels:
       traefik.enable: "true"
       traefik.http.routers.hass.rule: Host("hass.horse")
